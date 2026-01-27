@@ -1,0 +1,47 @@
+{% extends 'menu/admin/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-trash"></i> Confirm Delete</h1>
+</div>
+
+<div class="card border-danger">
+    <div class="card-header bg-danger text-white">
+        <h5>Are you sure?</h5>
+    </div>
+    <div class="card-body">
+        {% if item %}
+        <p>You are about to delete the menu item:</p>
+        <div class="alert alert-warning">
+            <strong>{{ item.name }}</strong> ({{ item.category.name }})
+            <br>
+            <small>{{ item.description|truncatewords:20 }}</small>
+        </div>
+        <p class="text-danger">This action cannot be undone.</p>
+        {% elif category %}
+        <p>You are about to delete the category:</p>
+        <div class="alert alert-warning">
+            <strong>{{ category.name }}</strong>
+        </div>
+        {% if category.items.count %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            This category has <strong>{{ category.items.count }}</strong> item(s). Deleting it will remove all associated items.
+        </div>
+        {% endif %}
+        <p class="text-danger">This action cannot be undone.</p>
+        {% endif %}
+    </div>
+    <div class="card-footer bg-light">
+        <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">
+                <i class="fas fa-check-circle"></i> Yes, Delete it
+            </button>
+            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                <i class="fas fa-times-circle"></i> Cancel
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

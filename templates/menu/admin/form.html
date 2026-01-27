@@ -1,0 +1,31 @@
+{% extends 'menu/admin/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ title }}</h1>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5>{{ title }}</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% crispy form %}
+        </form>
+        
+        {% if item %}
+        <hr>
+        <div class="alert alert-info mt-3">
+            <p><strong>Item Information:</strong></p>
+            <ul style="margin: 0; padding-left: 1.5rem;">
+                <li>Created: {{ item.created_at|date:"M d, Y H:i" }}</li>
+                <li>Last Updated: {{ item.updated_at|date:"M d, Y H:i" }}</li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

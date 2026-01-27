@@ -1,0 +1,60 @@
+{% extends 'menu/admin/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-list"></i> Categories</h1>
+    <a href="{% url 'create_category' %}" class="btn btn-primary">
+        <i class="fas fa-folder-plus"></i> Add New Category
+    </a>
+</div>
+
+{% if categories %}
+<div class="card">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Items Count</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td><strong>{{ category.name }}</strong></td>
+                    <td>
+                        {% if category.description %}
+                        {{ category.description|truncatewords:15 }}
+                        {% else %}
+                        <span style="color: #999;">No description</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge bg-primary">{{ category.items.count }} items</span>
+                    </td>
+                    <td>{{ category.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'edit_category' category.id %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="{% url 'delete_category' category.id %}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    <i class="fas fa-info-circle"></i> No categories yet. <a href="{% url 'create_category' %}">Create your first category</a>
+</div>
+{% endif %}
+{% endblock %}

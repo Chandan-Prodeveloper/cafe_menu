@@ -1,0 +1,110 @@
+{% extends 'menu/admin/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-chart-line"></i> Dashboard</h1>
+    <a href="{% url 'customer_menu' %}" class="btn btn-outline-primary" target="_blank">
+        <i class="fas fa-eye"></i> View Menu
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card">
+            <h5><i class="fas fa-utensils"></i> Total Items</h5>
+            <div class="stat-value">{{ stats.total_items }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card">
+            <h5><i class="fas fa-check-circle"></i> Available</h5>
+            <div class="stat-value" style="color: #28a745;">{{ stats.available_items }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card">
+            <h5><i class="fas fa-times-circle"></i> Unavailable</h5>
+            <div class="stat-value" style="color: #dc3545;">{{ stats.unavailable_items }}</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="stat-card">
+            <h5><i class="fas fa-list"></i> Categories</h5>
+            <div class="stat-value">{{ stats.total_categories }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5>Recent Updates</h5>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in recent_items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.category.name }}</td>
+                    <td>${{ item.price }}</td>
+                    <td>
+                        {% if item.is_available %}
+                        <span class="badge badge-success">Available</span>
+                        {% else %}
+                        <span class="badge badge-danger">Unavailable</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ item.updated_at|date:"M d, Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">No items yet. <a href="{% url 'create_menu_item' %}">Create one now</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'create_menu_item' %}" class="btn btn-primary w-100 mb-2">
+                    <i class="fas fa-plus-circle"></i> Add New Item
+                </a>
+                <a href="{% url 'create_category' %}" class="btn btn-outline-primary w-100">
+                    <i class="fas fa-folder-plus"></i> Add New Category
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Manage</h5>
+            </div>
+            <div class="card-body">
+                <a href="{% url 'menu_items_list' %}" class="btn btn-outline-secondary w-100 mb-2">
+                    <i class="fas fa-utensils"></i> All Menu Items
+                </a>
+                <a href="{% url 'categories_list' %}" class="btn btn-outline-secondary w-100">
+                    <i class="fas fa-list"></i> All Categories
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

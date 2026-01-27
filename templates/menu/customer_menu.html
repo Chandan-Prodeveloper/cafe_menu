@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Royal Café </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8B4513;
+            --accent-color: #D2691E;
+            --light-bg: #FFF8DC;
+            --text-dark: #2C1810;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6B3410 0%, #8B4513 25%, #D2691E 75%, #F4A460 100%);
+            color: white;
+            padding: 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background patterns */
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: movePattern 20s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes movePattern {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Coffee cup steam animation */
+        .header::after {
+            content: '☕';
+            position: absolute;
+            font-size: 120px;
+            opacity: 0.05;
+            right: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(-50%) rotate(-5deg); }
+            50% { transform: translateY(-60%) rotate(5deg); }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-text {
+            flex: 1;
+            text-align: left;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .header h1 {
+            font-weight: 800;
+            margin-bottom: 1rem;
+            font-size: 3rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color:None;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: shimmer 3s linear infinite;
+            position: relative;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .cafe-name {
+            display: inline-block;
+            position: relative;
+        }
+
+        .cafe-name::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+            animation: underlineGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes underlineGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .header-badges {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge-item {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.6rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .badge-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-qr {
+            flex-shrink: 0;
+            text-align: center;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideInRight 0.8s ease-out;
+            position: relative;
+            border: 3px solid rgba(255, 215, 0, 0.3);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .header-qr::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 2rem;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+        }
+
+        .header-qr h5 {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-qr img {
+            max-width: 160px;
+            height: auto;
+            border-radius: 10px;
+            border: 3px solid var(--accent-color);
+            padding: 5px;
+            background: white;
+        }
+
+        .header-qr p {
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        /* Decorative elements */
+        .header-decoration {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.5;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .decoration-1 {
+            top: 20%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .decoration-2 {
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 1s;
+        }
+
+        .decoration-3 {
+            top: 30%;
+            right: 20%;
+            animation-delay: 2s;
+        }
+
+        .cafe-showcase {
+            width: 100%;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cafe-showcase img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .cafe-showcase-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            padding: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .cafe-showcase-overlay h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .cafe-showcase-overlay p {
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .container-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .category-section {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-card.unavailable {
+            opacity: 0.6;
+        }
+
+        .menu-card-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .menu-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .unavailable-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(220, 53, 69, 0.95);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .menu-card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-card-description {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+
+        .menu-card-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+        }
+
+        .badge-tag {
+            background: var(--light-bg);
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-weight: 600;
+            border: 1px solid var(--accent-color);
+        }
+
+        .menu-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .prep-time {
+            font-size: 0.85rem;
+            color: #888;
+            background: #f5f5f5;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .spice-indicator {
+            display: inline-block;
+        }
+
+        .spice-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 3px;
+            background: #FF6B6B;
+        }
+
+        .footer {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                padding: 2rem 1rem;
+            }
+
+            .header-text {
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .header-badges {
+                justify-content: center;
+            }
+
+            .cafe-showcase-overlay h2 {
+                font-size: 1.5rem;
+            }
+
+            .cafe-showcase-overlay p {
+                font-size: 0.9rem;
+            }
+
+            .category-title {
+                font-size: 1.4rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-card-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .header::after {
+                font-size: 60px;
+                right: 5%;
+            }
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- Decorative floating elements -->
+        <div class="header-decoration decoration-1">☕</div>
+        <div class="header-decoration decoration-2">🥐</div>
+        <div class="header-decoration decoration-3">🍰</div>
+        
+        <div class="header-content">
+            <div class="header-text">
+                <h1><span class="cafe-name">Welcome to Shambhu Royal Café</span></h1>
+                <p>Explore our delicious offerings</p>
+                
+                <div class="header-badges">
+                    <div class="badge-item">
+                        <span>⭐</span>
+                        <span>Premium Quality</span>
+                    </div>
+                    <div class="badge-item">
+                        <span>🌿</span>
+                        <span>Fresh Ingredients</span>
+                    </div>
+                    <div class="badge-item">
+                        <span>👨‍🍳</span>
+                        <span>Expert Chefs</span>
+                    </div>
+                </div>
+            </div>
+            
+            {% if qr_code %}
+            <div class="header-qr">
+                <h5>📱 Scan to View Menu</h5>
+                <img src="{{ qr_code }}" alt="QR Code">
+                <p>Share with customers</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Cafe Showcase Image Section -->
+    <div class="cafe-showcase">
+        <img src="{{ MEDIA_URL }}menu_items/a5.jpg" alt="Shambhu Royal Café Interior">
+        <div class="cafe-showcase-overlay">
+            <h2>Experience Coffee Perfection</h2>
+            <p>Where ambiance meets exceptional taste</p>
+        </div>
+    </div>
+
+    <div class="container-main">
+        {% for category in categories %}
+        <div class="category-section">
+            <h2 class="category-title">{{ category.name }}</h2>
+            
+            {% if category.description %}
+            <p style="color: #666; margin-bottom: 1.5rem; font-style: italic;">{{ category.description }}</p>
+            {% endif %}
+
+            {% if category.items.all %}
+            <div class="menu-grid">
+                {% for item in category.items.all %}
+                <div class="menu-card {% if not item.is_available %}unavailable{% endif %}">
+                    <div class="menu-card-image">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                        {% else %}
+                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); color: white; font-size: 3rem;">
+                                🍽️
+                            </div>
+                        {% endif %}
+                        
+                        {% if not item.is_available %}
+                        <div class="unavailable-badge">Not Available</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="menu-card-body">
+                        <h3 class="menu-card-title">{{ item.name }}</h3>
+                        <p class="menu-card-description">{{ item.description }}</p>
+
+                        <div class="menu-card-meta">
+                            {% if item.is_vegetarian %}
+                            <span class="badge-tag">🌱 Vegetarian</span>
+                            {% endif %}
+                            
+                            {% if item.spice_level %}
+                            <span class="badge-tag">
+                                {% for i in "x" %}{% if forloop.counter <= item.spice_level|length %}🌶️{% endif %}{% endfor %}
+                                {{ item.get_spice_level_display }}
+                            </span>
+                            {% endif %}
+                            
+                            {% if item.preparation_time %}
+                            <span class="badge-tag">⏱️ {{ item.preparation_time }} min</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="menu-card-footer">
+                            <span class="price">${{ item.price }}</span>
+                            {% if item.preparation_time %}
+                            <span class="prep-time">~{{ item.preparation_time }} min</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-message">
+                No items available in this category yet.
+            </div>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="empty-message">
+            <p>No categories available yet. The café is setting up their menu.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="footer">
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; font-weight: 700;">Visit Us</h3>
+        <div style="display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: 0 auto;">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <span style="font-size: 1.2rem;">📍</span>
+                <span>In front of Punjab National Bank, Ramganj</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <span style="font-size: 1.2rem;">📱</span>
+                <a href="tel:8619084224">8619084224</a>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <span style="font-size: 1.2rem;">✉️</span>
+                <a href="mailto:arorachandan2004@gmail.com">arorachandan2004@gmail.com</a>
+            </div>
+        </div>
+        <p style="font-size: 0.9rem; margin-top: 1.5rem; opacity: 0.8;">&copy; 2024 Shambhu Royal Café. All rights reserved.</p>
+        <p style="font-size: 0.85rem; margin-top: 0.5rem; opacity: 0.7;">Made with ☕ for great dining experiences</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+{% extends 'menu/admin/base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1><i class="fas fa-utensils"></i> Menu Items</h1>
+    <a href="{% url 'create_menu_item' %}" class="btn btn-primary">
+        <i class="fas fa-plus-circle"></i> Add New Item
+    </a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5>Filter Items</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="category" class="form-label">Category</label>
+                <select name="category" id="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="availability" class="form-label">Availability</label>
+                <select name="availability" id="availability" class="form-select">
+                    <option value="">All Items</option>
+                    <option value="available">Available Only</option>
+                    <option value="unavailable">Unavailable Only</option>
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">
+                    <i class="fas fa-search"></i> Filter
+                </button>
+                <a href="{% url 'menu_items_list' %}" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if items %}
+<div class="card">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Tags</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        {% if item.image %}
+                        <img src="{{ item.image.url }}" alt="{{ item.name }}" style="width: 50px; height: 50px; border-radius: 5px; object-fit: cover;">
+                        {% else %}
+                        <div style="width: 50px; height: 50px; background: #f0f0f0; border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #999;">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <strong>{{ item.name }}</strong><br>
+                        <small style="color: #888;">{{ item.description|truncatewords:10 }}</small>
+                    </td>
+                    <td>{{ item.category.name }}</td>
+                    <td><strong>${{ item.price }}</strong></td>
+                    <td>
+                        <button class="btn btn-sm {% if item.is_available %}btn-success{% else %}btn-danger{% endif %} toggle-availability" data-item-id="{{ item.id }}" style="cursor: pointer;">
+                            {% if item.is_available %}
+                            <i class="fas fa-check-circle"></i> Available
+                            {% else %}
+                            <i class="fas fa-times-circle"></i> Unavailable
+                            {% endif %}
+                        </button>
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 0.3rem; flex-wrap: wrap;">
+                            {% if item.is_vegetarian %}
+                            <span class="badge bg-success">🌱 Veg</span>
+                            {% endif %}
+                            {% if item.spice_level %}
+                            <span class="badge bg-warning text-dark">🌶️ {{ item.get_spice_level_display|truncatewords:1 }}</span>
+                            {% endif %}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'edit_menu_item' item.id %}" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <a href="{% url 'delete_menu_item' item.id %}" class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    <i class="fas fa-info-circle"></i> No menu items found. <a href="{% url 'create_menu_item' %}">Create your first item</a>
+</div>
+{% endif %}
+
+<script>
+document.querySelectorAll('.toggle-availability').forEach(button => {
+    button.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const itemId = this.dataset.itemId;
+        
+        try {
+            const response = await fetch(`/admin/menu-items/${itemId}/toggle-availability/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                location.reload();
+            }
+        } catch (error) {
+            alert('Error updating item availability');
+        }
+    });
+});
+</script>
+{% endblock %}
