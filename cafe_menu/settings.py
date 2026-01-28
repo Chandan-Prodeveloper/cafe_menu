@@ -92,4 +92,4 @@ import os
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['chandanarora227799.pythonanywhere.com']
